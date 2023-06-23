@@ -73,4 +73,4 @@ For any questions or inquiries, please feel free to reach out to the project mai
 
 ---
 
-This project is licensed under the [MIT License](LICENSE). You are free to use, modify, and distribute the code for personal and commercial purposes. However, please include appropriate attribution to the original author by linking back to the repository.
+]
