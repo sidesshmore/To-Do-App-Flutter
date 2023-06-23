@@ -15,6 +15,17 @@ class _HomeState extends State<Home> {
   final todosList = ToDo.todoList();
   final _todoController = TextEditingController();
   List<ToDo> _foundToDo = [];
+  final lightThemeData = ThemeData(
+    // Define light theme colors and other properties
+    primaryColor: Color(0xFFEEEFF5),
+    // Define other light theme properties as needed
+  );
+
+  final darkThemeData = ThemeData(
+    // Define dark theme colors and other properties
+    primaryColor: Colors.black,
+    // Define other dark theme properties as needed
+  );
 
   @override
   void initState() {
@@ -25,8 +36,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: tdBGColor,
-      appBar: _buildAppBar(),
+      backgroundColor:
+          isDarkMode ? darkThemeData.primaryColor : lightThemeData.primaryColor,
+      appBar: _buildAppBar(isDarkMode, toggleTheme),
       body: Stack(
         children: [
           Container(
@@ -39,10 +51,13 @@ class _HomeState extends State<Home> {
                     children: [
                       Container(
                         margin: const EdgeInsets.only(top: 50, bottom: 20),
-                        child: const Text(
+                        child: Text(
                           'To Do List:',
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          ),
                         ),
                       ),
                       for (ToDo todoo in _foundToDo.reversed)
@@ -155,6 +170,12 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void toggleTheme() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+    });
+  }
+
   Widget searchBox() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -185,16 +206,16 @@ class _HomeState extends State<Home> {
   }
 }
 
-AppBar _buildAppBar() {
+AppBar _buildAppBar(bool isDarkMode, VoidCallback toggleTheme) {
   return AppBar(
     elevation: 0,
-    title: const Row(
+    title: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Icon(
-          Icons.menu,
-          color: tdBlack,
-          size: 40,
+        IconButton(
+          icon: isDarkMode ? Icon(Icons.sunny) : Icon(Icons.nightlight),
+          color: isDarkMode ? tdDarkAppBarIconColor : tdLightAppBarIconColor,
+          onPressed: toggleTheme,
         ),
         CircleAvatar(
           radius: 22,
@@ -202,6 +223,8 @@ AppBar _buildAppBar() {
         )
       ],
     ),
-    backgroundColor: tdBGColor,
+    backgroundColor: isDarkMode
+        ? tdDarkPrimaryColor
+        : tdLightPrimaryColor, // Update the app bar color based on isDarkMode
   );
 }
